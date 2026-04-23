@@ -1,0 +1,477 @@
+/*
+ * styles/responsive.css
+ * Full responsive layer for MarketMind v3.
+ *
+ * HOW TO USE:
+ *   Import this file in pages/index.tsx inside the <Head> block:
+ *   <link rel="stylesheet" href="/responsive.css" />
+ *   Then place this file in the /public folder (Next.js serves /public as /).
+ *
+ *   Alternatively paste the entire content of this file into the
+ *   <style jsx global> block at the bottom of index.tsx, after all existing rules.
+ *
+ * BREAKPOINTS:
+ *   ≥1280px  — wide desktop  (default — existing styles handle this)
+ *   1024px   — laptop / small desktop
+ *    768px   — tablet landscape / iPad
+ *    640px   — tablet portrait / large phone
+ *    480px   — phone (most common mobile)
+ *    360px   — small phone (Samsung Galaxy S, older iPhones)
+ */
+
+/* ── Root sizing ─────────────────────────────────────────────────────────── */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ── Header — shrink on small screens ───────────────────────────────────── */
+@media (max-width: 768px) {
+  .header {
+    height: auto;
+    min-height: 54px;
+    flex-wrap: wrap;
+    padding: 8px 12px;
+    gap: 6px;
+  }
+
+  .logo {
+    font-size: 13px;
+    margin-right: 0;
+    order: 0;
+  }
+
+  .header-right {
+    order: 1;
+    margin-left: 0;
+  }
+
+  .nav {
+    order: 2;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0;
+    padding-bottom: 2px;
+  }
+
+  .nav::-webkit-scrollbar { display: none; }
+
+  .nav-btn {
+    padding: 0 10px;
+    height: 36px;
+    font-size: 9px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .nav-btn.active::after {
+    left: 10px;
+    right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-icon { display: none; }
+  .nav-icon  { display: none; }
+  .nav-btn   { padding: 0 8px; font-size: 8px; }
+  .badge     { display: none; }
+}
+
+/* ── Simulate layout — sidebar + main ───────────────────────────────────── */
+
+/* Laptop: slightly narrower sidebar */
+@media (max-width: 1024px) {
+  .sim-layout {
+    grid-template-columns: 250px 1fr;
+  }
+}
+
+/* Tablet and below: stack sidebar above main */
+@media (max-width: 768px) {
+  .sim-layout {
+    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.055);
+    padding: 14px 12px;
+    overflow-y: visible;
+  }
+
+  .results-area {
+    max-height: none;
+    padding: 14px 12px;
+  }
+}
+
+/* ── Sidebar internals ───────────────────────────────────────────────────── */
+
+/* Asset grid — 4 columns on mobile since labels are short */
+@media (max-width: 768px) {
+  .asset-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .asset-btn {
+    padding: 6px 4px;
+  }
+
+  .sym { font-size: 9px; }
+  .typ { font-size: 7px; }
+}
+
+@media (max-width: 480px) {
+  .asset-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+  }
+
+  .sym { font-size: 8px; }
+}
+
+/* Live price card */
+@media (max-width: 768px) {
+  .live-price { font-size: 18px; }
+
+  .live-indicators {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 12px;
+  }
+}
+
+/* Run button */
+@media (max-width: 768px) {
+  .run-btn {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    border-radius: 0;
+    margin-left: -12px;
+    margin-right: -12px;
+    width: calc(100% + 24px);
+    margin-bottom: 0;
+    padding: 14px;
+    font-size: 11px;
+  }
+}
+
+/* Agent roster — hide on mobile, shown in agents tab instead */
+@media (max-width: 640px) {
+  .sidebar .slab:last-of-type,
+  .sidebar .roster-item {
+    display: none;
+  }
+}
+
+/* ── TradingView chart ───────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .chart-panel { border-radius: 8px; margin-bottom: 14px; }
+
+  #tv-chart { height: 280px !important; }
+
+  .chart-panel-head {
+    padding: 8px 10px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .chart-tfs { gap: 3px; }
+  .chart-tf-btn { padding: 2px 6px; font-size: 8px; }
+}
+
+@media (max-width: 480px) {
+  #tv-chart { height: 220px !important; }
+}
+
+/* PA strip — stack on very small */
+@media (max-width: 640px) {
+  .pa-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pa-cell:last-child {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 400px) {
+  .pa-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .pa-cell:last-child {
+    grid-column: span 1;
+  }
+}
+
+/* ── Consensus block ─────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .consensus-block { padding: 14px 12px; margin-bottom: 14px; }
+
+  .consensus-top {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .consensus-verdict { font-size: 26px; }
+
+  .breakdown {
+    flex-direction: row;
+    gap: 14px;
+  }
+}
+
+/* ── Agent cards grid ────────────────────────────────────────────────────── */
+
+/* 2 columns on laptop */
+@media (max-width: 1100px) {
+  .agents-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 1 column on phone */
+@media (max-width: 640px) {
+  .agents-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+/* Agent card internals */
+@media (max-width: 480px) {
+  .agent-card { padding: 12px; }
+  .agent-name { font-size: 13px; }
+  .agent-role { font-size: 10px; }
+  .reasoning  { font-size: 11px; }
+  .action-badge { padding: 4px 8px; font-size: 9px; }
+}
+
+/* ── Debate turning points ───────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .turning-point { padding: 10px; }
+
+  .tp-top {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tp-change { margin-left: 0; }
+}
+
+/* ── Page layout (macro, agents, history, backtest) ─────────────────────── */
+@media (max-width: 768px) {
+  .page-layout { padding: 16px 12px; }
+  .page-title  { font-size: 18px; }
+  .page-sub    { font-size: 12px; margin-bottom: 16px; }
+}
+
+/* ── Macro grid ──────────────────────────────────────────────────────────── */
+
+/* 2 columns on tablet */
+@media (max-width: 900px) {
+  .macro-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* 1 column on phone */
+@media (max-width: 480px) {
+  .macro-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .macro-big-val { font-size: 18px; }
+
+  .macro-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+/* ── Agent profiles grid ─────────────────────────────────────────────────── */
+
+/* 2 cols on laptop */
+@media (max-width: 1100px) {
+  .agent-profiles-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* 1 col on phone */
+@media (max-width: 640px) {
+  .agent-profiles-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ap-card { padding: 14px 12px; }
+  .ap-name { font-size: 13px; }
+
+  .ap-stats { flex-wrap: wrap; }
+  .ap-stat  { min-width: 33%; }
+}
+
+/* ── History tab ─────────────────────────────────────────────────────────── */
+
+/* 2 cols on tablet */
+@media (max-width: 900px) {
+  .history-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* 2 cols on phone too — keep numbers visible */
+@media (max-width: 480px) {
+  .history-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .hstat-val   { font-size: 18px; }
+  .hstat-label { font-size: 7px; }
+}
+
+/* History items */
+@media (max-width: 640px) {
+  .hi-top {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .hi-date { margin-left: 0; width: 100%; }
+  .hi-body { font-size: 11px; }
+}
+
+/* ── Loading overlay ─────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .loading-spinner { width: 38px; height: 38px; }
+  .loading-msg     { font-size: 11px; text-align: center; padding: 0 20px; }
+}
+
+/* ── Touch targets — minimum 44px for all interactive elements ───────────── */
+@media (max-width: 768px) {
+  .asset-btn,
+  .tf-tab,
+  .hfilter,
+  .chart-tf-btn {
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-btn {
+    min-height: 44px;
+  }
+}
+
+/* ── Scrollable horizontal containers — no scrollbar visible ────────────── */
+@media (max-width: 768px) {
+  .hi-agents {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+
+  .hi-agents::-webkit-scrollbar { display: none; }
+
+  .hfilters {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .hfilters::-webkit-scrollbar { display: none; }
+}
+
+/* ── Prevent text overflow on small screens ──────────────────────────────── */
+@media (max-width: 480px) {
+  .reasoning,
+  .ap-desc,
+  .cs-body,
+  .tp-reason {
+    font-size: 11px;
+    line-height: 1.55;
+  }
+
+  .risk-row,
+  .analogy-row,
+  .macro-row {
+    font-size: 10px;
+    word-break: break-word;
+  }
+
+  .verdict-details {
+    font-size: 9px;
+  }
+}
+
+/* ── Coming soon / backtest page ─────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .coming-soon-box {
+    padding: 24px 16px;
+  }
+
+  .cs-icon  { font-size: 28px; }
+  .cs-title { font-size: 16px; }
+  .cs-body  { font-size: 12px; }
+}
+
+/* ── Safe area insets for notched phones (iPhone X+) ────────────────────── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .run-btn {
+    padding-bottom: calc(14px + env(safe-area-inset-bottom));
+  }
+
+  .sidebar {
+    padding-bottom: calc(14px + env(safe-area-inset-bottom));
+  }
+}
+
+/* ── Print — basic readability ───────────────────────────────────────────── */
+@media print {
+  .header,
+  .sidebar,
+  .run-btn,
+  .loading-overlay,
+  .scanline,
+  body::before,
+  body::after {
+    display: none !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .results-area {
+    max-height: none;
+    overflow: visible;
+    padding: 0;
+  }
+
+  .agent-card,
+  .consensus-block,
+  .history-item {
+    break-inside: avoid;
+    border: 1px solid #ccc !important;
+    background: #fff !important;
+    color: #000 !important;
+    margin-bottom: 12px;
+  }
+
+  .consensus-verdict.BUY  { color: green !important; }
+  .consensus-verdict.SELL { color: red !important; }
+  .consensus-verdict.HOLD { color: orange !important; }
+}
